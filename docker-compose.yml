@@ -1,0 +1,28 @@
+version: "3.9"
+services:
+  nginx:
+    build: ./docker/nginx/
+    ports:
+      - 80:80
+    volumes:
+      - ./src/:/var/www/html/
+    links:
+      - mysql
+
+  php:
+    build: ./docker/php/
+    expose:
+      - 9000
+    volumes:
+      - ./src/:/var/www/html/
+
+  mysql:
+    image: mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: "rootpass"
+      MYSQL_USER: "pilates"
+      MYSQL_PASSWORD: "pilatespass"
+    volumes:
+      - ./src/moodledata:/var/www/data
+volumes:
+  mysql-data:
